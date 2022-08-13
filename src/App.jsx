@@ -5,6 +5,7 @@ import Contacts from './contacts/Contacts';
 import Header from './layouts/Header';
 import {Container} from 'react-bootstrap';
 import AddContact from './contacts/AddContact';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialContacts = [
   {
@@ -94,11 +95,19 @@ function App() {
     const updatedContact = contacts.filter(contact=> contact.id !==id)
     setContacts(updatedContact)
   }
+
+  const addContact = contact =>{
+    let contactToAdd = {
+      id:uuidv4(),
+      ...contact,
+    }
+    setContacts([contactToAdd, ...contacts])
+  }
   return (
     <div className="App">
       <Header />
       <Container style={{ width:"800px", margin:"0 auto" }} className="pt-3">
-          <AddContact />
+          <AddContact addContact ={addContact} />
           <Contacts  contacts={contacts} deleteContact={deleteContact} />
       </Container>
       
