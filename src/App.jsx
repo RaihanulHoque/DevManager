@@ -6,6 +6,7 @@ import Header from './layouts/Header';
 import {Container} from 'react-bootstrap';
 import AddContact from './contacts/AddContact';
 import { v4 as uuidv4 } from 'uuid';
+import "react-datepicker/dist/react-datepicker.css";
 
 const initialContacts = [
   {
