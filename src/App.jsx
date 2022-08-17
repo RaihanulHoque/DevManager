@@ -1,12 +1,25 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 // import './App.css'
-import Contacts from './contacts/Contacts';
+import Contacts from './components/contacts/Contacts';
 import Header from './layouts/Header';
 import {Container} from 'react-bootstrap';
-import AddContact from './contacts/AddContact';
+import AddContact from './pages/AddContact';
+import EditContact from './pages/EditContact';
+import Home from './pages/Home';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import Notfound from './pages/Notfound';
 import { v4 as uuidv4 } from 'uuid';
 import "react-datepicker/dist/react-datepicker.css";
+import { ToastContainer, toast } from 'react-toastify';
+import ReactDOM from "react-dom/client";
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
 
 const initialContacts = [
   {
@@ -106,11 +119,35 @@ function App() {
   }
   return (
     <div className="App">
-      <Header />
-      <Container style={{ width:"800px", margin:"0 auto" }} className="pt-3">
-          <AddContact addContact ={addContact} />
-          <Contacts  contacts={contacts} deleteContact={deleteContact} />
-      </Container>
+      <BrowserRouter>
+      
+        <Header />
+        <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        /> 
+        <Container style={{ width:"800px", margin:"0 auto" }} className="pt-3">
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path='/contacts' element={
+              <Contacts  contacts={contacts} deleteContact={deleteContact} />
+            } />
+            <Route path='/add-contact' element={<AddContact addContact={addContact} />} />
+            <Route path='/edit-contact/:id' element={<EditContact />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='*' element={<Notfound />} />
+
+          </Routes>
+        </Container>
+      </BrowserRouter>
       
     </div>
   )

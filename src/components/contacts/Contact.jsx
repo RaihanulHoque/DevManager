@@ -1,6 +1,8 @@
 import React from 'react'
 import {Card, ListGroup, Button} from 'react-bootstrap'
 import { FaTrashAlt, FaEye } from "react-icons/fa";
+import {format} from 'date-fns'
+
 
 export default function Contact({contact, deleteContact}) {
     // console.log(contact, '.........Each Contact')
@@ -27,7 +29,8 @@ export default function Contact({contact, deleteContact}) {
                 <ListGroup className="list-group-flush">
                     <ListGroup.Item>Gender: {gender}</ListGroup.Item>
                     <ListGroup.Item>Email: {email}</ListGroup.Item>
-                    <ListGroup.Item>Date of Birth: {dateOfBirth}</ListGroup.Item>
+                    {/* Checking the Date is an Object or not, if its an Object then we need to make it String */}
+                    <ListGroup.Item>Date of Birth: {dateOfBirth instanceof Object ? format(dateOfBirth, 'dd/MM/yyyy') : dateOfBirth}</ListGroup.Item>
                 </ListGroup>
                 <div className='card-btn mt-3'>
                     <Card.Link href="#">
