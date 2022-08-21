@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import {toast} from 'react-toastify' 
+import {useNavigate} from 'react-router-dom'
+
 const schema = yup.object({
     firstName:yup
     .string()
@@ -39,8 +41,8 @@ const schema = yup.object({
 
 })
 
-export default function ContactForm({addContact}) {
- 
+export default function ContactForm({addContact, foundContact, updateContact}) {
+    // console.log(foundContact, '...........Found Contact detail')
     const { 
         register, 
         handleSubmit, 
@@ -50,22 +52,34 @@ export default function ContactForm({addContact}) {
         formState:{errors, isSubmitting, isSubmitSuccessful} } = useForm({
         resolver: yupResolver(schema),
     })
+    const navigate = useNavigate();
+
     const onSubmit = (data) =>{
+        const id = foundContact?.id
         // console.log(data.dateOfBirth)
-        toast.success('Contact is Added successfully!')
-        addContact(data);
+        if(id){
+            updateContact(data, id)
+            toast.success('Contact is Updated successfully!')
+
+        }else{
+            toast.success('Contact is Added successfully!')
+            addContact(data);
+        }
+
+        navigate('/contacts')
 
     }
     // console.log(errors)
 
     const defaultValue = {
-        firstName:'Raihan',
-        lastName:'Sabuj',
-        email:'raihansabuj@gmail.com',
-        profession:'developer',
-        bio:'I am a full stack developer',
-        gender:'male',
-        image:'https://images.unsplash.com/photo-1658188920000-854ce73e2440?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80',
+        firstName:foundContact?.firstName || 'Raihan',
+        lastName:foundContact?.lastName || 'Sabuj',
+        email:foundContact?.email || 'raihansabuj@gmail.com',
+        profession:foundContact?.profession || 'developer',
+        bio:foundContact?.bio || 'I am a full stack developer',
+        gender:foundContact?.gender || 'male',
+        dateOfBirth: foundContact?.dateOfBirth || new Date(),
+        image:foundContact?.image || 'https://images.unsplash.com/photo-1658188920000-854ce73e2440?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80',
     }
 
 
@@ -96,7 +110,7 @@ export default function ContactForm({addContact}) {
 
   return (
     <>
-    <h2 className='text-center'>Add Contact</h2>
+    <h2 className='text-center'>{foundContact?.id ? 'Edit Contact' : 'Add Contact'}</h2>
     <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group as={Row} className='mb-3'>
             <Col sm={3}>
@@ -225,15 +239,12 @@ export default function ContactForm({addContact}) {
             <Col sm={9}>
                 <DatePicker 
                     selected={birthYear}
-                    onChange={(date) => setBirthYear(date)
-                    }
+                    onChange={(date) => setBirthYear(date) }
                     // maxDate={addDays(new Date(), 5)}
-                    
                     maxDate={new Date()}
                     name="dateOfBirth"
                     id="dateOfBirth"
                     placeholder='Enter your DOB'
-                    dateFormat="dd/MM/yyyy"
                     showYearDropdown 
                 />
             </Col>
@@ -246,7 +257,7 @@ export default function ContactForm({addContact}) {
                 <Form.Check
                 type='radio'
                 id='Male'
-                defaultChecked={true}
+                defaultChecked={ gender === 'male'}
                 value="male"
                 label="Male"
                 {...register('gender')}
@@ -257,6 +268,7 @@ export default function ContactForm({addContact}) {
                 type='radio'
                 id='Female' 
                 value="female"
+                defaultChecked = {gender === 'female'}
                 label="Female"
                 {...register('gender')}
                 />
@@ -284,7 +296,7 @@ export default function ContactForm({addContact}) {
             </Col>
                 </Form.Group> 
                
-        <Button variant='primary' size='md' type='submit' disabled={isSubmitting ? 'disabled' : ''}>Add Contact</Button>
+        <Button variant='primary' size='md' type='submit' disabled={isSubmitting ? 'disabled' : ''}>{foundContact?.id ? 'Update Contact' : 'Add Contact'}</Button>
     </Form>
     </>
   )

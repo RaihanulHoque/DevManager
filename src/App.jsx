@@ -28,7 +28,7 @@ const initialContacts = [
     lastName: 'Pfertner',
     email: 'bpfertner0@drupal.org',
     profession: 'Web Developer',
-    gender: 'Female',
+    gender: 'female',
     image: 'https://randomuser.me/api/portraits/women/75.jpg',
     dateOfBirth: '05/11/2021',
     bio: 'All About me',
@@ -39,8 +39,7 @@ const initialContacts = [
     lastName: 'McPhilip',
     email: 'imcphilip1@toplist.cz',
     profession: 'Software Developer',
-
-    gender: 'Male',
+    gender: 'male',
     image: 'https://randomuser.me/api/portraits/men/75.jpg',
     dateOfBirth: '04/04/2022',
     bio: 'All About me',
@@ -52,7 +51,7 @@ const initialContacts = [
     email: 'fveel2@yellowbook.com',
     profession: 'Graphic Designer',
 
-    gender: 'Male',
+    gender: 'male',
     image: 'https://randomuser.me/api/portraits/men/78.jpg',
     dateOfBirth: '17/05/2022',
     bio: 'All About me',
@@ -63,7 +62,7 @@ const initialContacts = [
     lastName: 'Lawrenz',
     email: 'slawrenz3@independent.co.uk',
     profession: 'Data entry specialist',
-    gender: 'Female',
+    gender: 'female',
     image: 'https://randomuser.me/api/portraits/women/80.jpg',
     dateOfBirth: '30/07/2022',
     bio: 'All About me',
@@ -73,7 +72,7 @@ const initialContacts = [
     firstName: 'Bucky',
     lastName: 'Casaccio',
     email: 'bcasaccio4@netlog.com',
-    gender: 'Male',
+    gender: 'male',
     profession: 'Data scientist',
     image: 'https://randomuser.me/api/portraits/men/56.jpg',
     dateOfBirth: '21/03/2022',
@@ -85,7 +84,7 @@ const initialContacts = [
     lastName: 'Lodford',
     email: 'rlodford5@nbcnews.com',
     profession: 'python Developer',
-    gender: 'Female',
+    gender: 'female',
     image: 'https://randomuser.me/api/portraits/women/81.jpg',
     dateOfBirth: '16/01/2022',
     bio: 'All About me',
@@ -95,7 +94,7 @@ const initialContacts = [
     firstName: 'Hubert',
     lastName: 'Langhorne',
     email: 'hlanghorne6@thetimes.co.uk',
-    gender: 'Male',
+    gender: 'male',
     profession: 'CPA Marketer',
     image: 'https://randomuser.me/api/portraits/men/80.jpg',
     dateOfBirth: '05/02/2022',
@@ -109,7 +108,23 @@ function App() {
     const updatedContact = contacts.filter(contact=> contact.id !==id)
     setContacts(updatedContact)
   }
+  const updateContact = (updatedContact, id) =>{
+    console.log(updatedContact, id, '... from UpdateContact function')
+    const contactsWithUpdate = contacts.map(contact=>{
+        if(contact.id === id){
+          //update contact info
+          return {
+            ...updatedContact,
+          }
+        }else{
+          return contact
+        }
+    })
 
+    //Placing updated information to the Contact list
+    setContacts(contactsWithUpdate)
+
+  }
   const addContact = contact =>{
     let contactToAdd = {
       id:uuidv4(),
@@ -140,7 +155,7 @@ function App() {
               <Contacts  contacts={contacts} deleteContact={deleteContact} />
             } />
             <Route path='/add-contact' element={<AddContact addContact={addContact} />} />
-            <Route path='/edit-contact/:id' element={<EditContact />} />
+            <Route path='/edit-contact/:id' element={<EditContact contacts={contacts} updateContact ={updateContact} />} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='*' element={<Notfound />} />

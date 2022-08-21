@@ -1,12 +1,18 @@
-import React from 'react'
+ import React from 'react'
 import ContactForm from '../components/contacts/ContactForm'
 import {useParams} from 'react-router-dom'
 
-function EditContact() {
-    const params =  useParams();
-    console.log(params,'.............Edit Contact ID')
+function EditContact({contacts, updateContact}) {
+  // console.log(contacts, '............all contacts from edit page')
+
+    const { id } =  useParams(); // destractive Param to get the 'id' which sent from route like id:2
+    const numID = Number(id);
+    const foundContact = contacts.find((contact) => contact.id === numID)
+    // const result = arr.find(item => item.customId === 'user1')
+
+    // console.log(foundContact, '............Found Contact by "Barbette"')
   return (
-    <ContactForm />
+    <ContactForm updateContact={updateContact} foundContact={foundContact} />
   )
 }
 
