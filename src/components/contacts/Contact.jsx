@@ -1,13 +1,26 @@
 import React from 'react'
 import {Card, ListGroup, Button} from 'react-bootstrap'
-import { FaTrashAlt, FaEye } from "react-icons/fa";
+import { FaTrashAlt, FaEye, FaPencilAlt } from "react-icons/fa";
 import {format} from 'date-fns'
+import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 
-export default function Contact({contact, deleteContact}) {
+export default function Contact({contact, deleteContact, updateContact}) {
     // console.log(contact, '.........Each Contact')
     const {id, firstName, LastName, email, gender, profession, bio, image, dateOfBirth } =contact;
-  return (
+    
+    const handleUpdate = (id) =>{
+        toast.success('Contact is deleted successfully!')
+        updateContact(id)
+    }
+    
+    const handleDelete = (id) =>{
+        toast.success('Contact is deleted successfully!')
+        deleteContact(id)
+    }
+    
+    return (
     <>
     <Card className='mb-3'>
         <div className='d-flex'>
@@ -33,15 +46,20 @@ export default function Contact({contact, deleteContact}) {
                     <ListGroup.Item>Date of Birth: {dateOfBirth instanceof Object ? format(dateOfBirth, 'dd/MM/yyyy') : dateOfBirth}</ListGroup.Item>
                 </ListGroup>
                 <div className='card-btn mt-3'>
-                    <Card.Link href="#">
+                    <Card.Link as={Link} to={`/contact/${id}`}>
                         <Button variant='warning ms-3' size='md' type='view'>
                             <FaEye />
                         </Button>
                     </Card.Link>
-                    <Card.Link href="#">
-                    <Button variant='danger ms-3' size='md' type='view' onClick={()=>deleteContact(id)}>
+                    <Card.Link as={Link} to={`/edit-contact/${id}`}>
+                    <Button variant='primary ms-3' size='md' type='view'>
+                            <FaPencilAlt />
+                    </Button>
+                    </Card.Link>
+                    <Card.Link>
+                    <Button variant='danger ms-3' size='md' type='view' onClick={()=>handleDelete(id)}>
                             <FaTrashAlt />
-                        </Button>
+                    </Button>
                     </Card.Link>
                 </div>
             </Card.Body>

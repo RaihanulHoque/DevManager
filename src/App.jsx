@@ -6,6 +6,7 @@ import Header from './layouts/Header';
 import {Container} from 'react-bootstrap';
 import AddContact from './pages/AddContact';
 import EditContact from './pages/EditContact';
+import ContactDetails from './pages/ContactDetails';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -14,6 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
 import "react-datepicker/dist/react-datepicker.css";
 import { ToastContainer, toast } from 'react-toastify';
 import ReactDOM from "react-dom/client";
+import TestTwoSolutions from './components/tests/TestTwoSolutions'
 
 import {
   BrowserRouter,
@@ -110,10 +112,11 @@ function App() {
   }
   const updateContact = (updatedContact, id) =>{
     console.log(updatedContact, id, '... from UpdateContact function')
-    const contactsWithUpdate = contacts.map(contact=>{
+    const updateContactInfo = contacts.map(contact=>{
         if(contact.id === id){
           //update contact info
           return {
+            id, // as updatedContact does't have ID perameter so we need to provide the id with this
             ...updatedContact,
           }
         }else{
@@ -122,7 +125,7 @@ function App() {
     })
 
     //Placing updated information to the Contact list
-    setContacts(contactsWithUpdate)
+    setContacts(updateContactInfo)
 
   }
   const addContact = contact =>{
@@ -154,11 +157,14 @@ function App() {
             <Route path='/contacts' element={
               <Contacts  contacts={contacts} deleteContact={deleteContact} />
             } />
+            <Route path='/contact/:id' element={<ContactDetails contacts={contacts} deleteContact={deleteContact} />} />
             <Route path='/add-contact' element={<AddContact addContact={addContact} />} />
             <Route path='/edit-contact/:id' element={<EditContact contacts={contacts} updateContact ={updateContact} />} />
             <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='*' element={<Notfound />} />
+
+            <Route path='/test2' element={<TestTwoSolutions />} />
 
           </Routes>
         </Container>
